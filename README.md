@@ -9,9 +9,10 @@ Q7 board OCM reference design
 - dts        `本设计对应zync的设备树，用于配置Linux操作系统`
 - scripts    `tcl脚本，用于生成vivado project`
 - src        `源程序`
- * rtl   ` FPGA代码`
- * c      `C代码`
- * python `python代码`
+  rtl    `FPGA代码`
+  c      `C代码`
+  python `python代码`
+
 - test       `测试用代码`
 - xdc        `约束文件`
 

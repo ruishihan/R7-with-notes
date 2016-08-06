@@ -35,9 +35,9 @@
 
 
 * AXI2S_ISIZE	`14`	
->     输入缓冲区长度，32位，低6位全零，高8位全0	
+>     输入缓冲区长度，32位，低6位全零**(64 Bytes)**，高8位全0 **（32-8=24位，对应32 MB，缓冲区长度总共为 64MB，输入输出平分，所以输入输出缓冲区长度最大为 32 MB ）**	
 >     --------------	
->     只写，缺省值0x10000
+>     只写，缺省值0x10000 **(64 KB)** *一组数据64 字节？？缓冲区存储 1K 组数据？？？*
 
 * AXI2S_OBASE	`18`
 >     输出缓冲区起始地址，32位地址，32bit对齐，最好是4K对齐	
@@ -51,7 +51,7 @@
 
 ** 注：TDD部分没有实现 **
 * FRAME_LEN	`20`	
->     帧长度，单位chip数，有效长度24位	
+>     帧长度，单位chip数，有效长度24位 **(最大帧长度为32 MB？？)**	
 >     --------------	
 >     只写，缺省值1920
 
@@ -80,6 +80,8 @@
 >     --------------	
 >     只写
 
+**(为什么这么多“单位chip数”？？？)**
+
 * AXI2S_STATE	`0`	
 >     bit 0：Ien
 >     bit 1：Oen
@@ -107,7 +109,7 @@
 >     读计数	
 >     --------------	
 >     只读
- 
+**(到代码中去找这四个寄存器值的实际意义是什么)！！！** 
 
 # AD9361寄存器规划 #
 
@@ -133,10 +135,10 @@
 * AD9361 TX_RX	`20`	
 >     bit 0：0-Rx 1-Tx
 >     When using FDD (register 0x013[0] = 1), FDD TXON/RXON Independent Control mode allows the receive chain and transmit chain to be enabled independently. This mode is enabled by setting register 0x015[7] =1. Note, SPI writes must be used to move the ENSM into the FDD state. The ENABLE and TXNRX pins are remapped to RXON and TXON, respectively. 
+**(在頻分双工下，允许收发通道单独开关。)**
 >     --------------	
 >     只写,缺省值0x0
-
-* AD9361 EN_AGC	`30`	
+* AD9361 EN_AGC	`30`	**(自动增益控制和手动增益控制)	增益控制具体指什么？？？**
 >     bit 0：1-AGC 0-MGC
 >     --------------	
 >     只写,缺省值0x0

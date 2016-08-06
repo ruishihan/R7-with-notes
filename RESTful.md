@@ -47,7 +47,7 @@
 		curl -G -d 'IBASE=xxx&OBASE=xxx&&ISZIE=xxx&OSIZE=xxx&rx&freq=xxx&gain=xx&port=0|1'
 		return {"data":{"IBASE":xxx,"OBASE"},"ret":"ok"}
 		IBASE:option,default=0xfffc0000,如果用DRAM，可以改为0x1e000000 
-		ISIZE:option,default=0x10000,64K,16Ksamples
+		ISIZE:option,default=0x10000,64K,16Ksamples  **(用OCM做缓冲区的时候，缓冲区长度为64K，64Bytes一组，共有1 K个组)**
 		OBASE:option,default=0xfffd0000,如果用DRAM，可以改为0x1f000000 
 		OSIZE:option,default=0x10000
 		rx:option,表示修改接收配置

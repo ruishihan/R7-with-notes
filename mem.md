@@ -8,11 +8,12 @@ OCM被映射到0xfffc0000开始的256K内存空间，可以作为射频数据或
 可以在操作系统启动时保留一部分内存给硬件使用
 修改uboot的配置，add to uEnv.txt
 
-		fdt_high=0x10000000
+		fdt_high=0x10000000	
 		initrd_high=0x10000000
 		bootargs=console=ttyPS0,115200 root=/dev/ram rw earlyprintk mem=480M
 
-从0x1e00-0000开始的32M空间操作系统就不再使用了。
+**0x10000000=256K**
+从0x1e00-0000 (480M) 开始的32M (哪里体现了32M？？) 空间操作系统就不再使用了。
 ### 修改AXIDMA的配置
 AXI DMA有4个参数可以配置，分别是收发的BASE和SIZE。寄存器名：
 		
@@ -22,7 +23,7 @@ AXI DMA有4个参数可以配置，分别是收发的BASE和SIZE。寄存器名�
 		AXI_OBASE
 
 修改AXI_IBASE和AXI_OBASE到0x1e00-0000开始的32M空间去，这段内存操作系统不会使用。
-修改AXI_ISIZE和AXI_OSIZE为合适的值，收发公用32M内存，并且为64自家的整数倍。
+修改AXI_ISIZE和AXI_OSIZE为合适的值，收发公用（收发区域之和为32M）32M内存，并且为64字节的整数倍。
 
 
 
