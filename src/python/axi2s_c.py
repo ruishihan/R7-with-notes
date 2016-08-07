@@ -4,6 +4,7 @@ from const import *
 import time
 import sys
 
+## create a memfile and set the AXI2S_EN AXI2S_I(O)SIZE(BASE) and so on. 
 class axi2s_c:
 	def __init__(self,d=None):
 		self.dev = dev_mem.dev_mem(FPGA_BASE,FPGA_SIZE)
@@ -30,6 +31,7 @@ class axi2s_c:
 
 	def apiwrite(self,argv):
 		if 'reg' in argv and 'value' in argv:
+##what's the type of argv??dict?? what's the meaning of this sentence??
 			v = int(argv.value,16)
 			if argv.reg in reg.addr:
 				self.dev.iowrite(reg.addr[argv.reg],v)
@@ -40,6 +42,7 @@ class axi2s_c:
 			return {'ret':'err','res':'reg or value not given'}
 
 	def version(self):
+##version reture the version string contain VER_MAJOR +VER_MINOR0/1/2/3/4
 		vreg = reg.addr['VER_MAJOR']
 		major = self.dev.ioread(vreg)
 		minor = []

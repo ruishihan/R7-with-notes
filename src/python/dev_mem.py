@@ -1,5 +1,8 @@
+#! /usr/bin/python
+# -*-coding:utf-8-*-
 import mmap
 from ctypes import *
+#本函数只使用了python提供的库mmap，不直接涉及python调用c的操作，但是mmap可能是调用c来实现的，所以需要包含ctypes库。
 
 class dev_mem:
     DEVNAME = '/dev/mem'
@@ -21,6 +24,7 @@ class dev_mem:
     def memread(self,addr,len):
         buf = (c_uint*len)()
         self.mmap.seek(addr)
+##seek()----set the file's current position.
         memmove(buf,self.mmap.read(4*len),4*len)
         return buf
     
@@ -42,7 +46,7 @@ class dev_mem:
 def main():
     uut = dev_mem(0xfffc0000,0x10000)
     print uut.mmap[:5]
-
+##uut.mmap[:5] ????
 if __name__ == '__main__':
     main()
 
