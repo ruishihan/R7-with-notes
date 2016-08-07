@@ -1,4 +1,5 @@
 #! /bin/bash
+###scan.sh 是实现什么功能？？
 hostip=$1
 echo "init ad9361"
 curl -F adscripts=@'AD9361/scan.reg' http://${hostip}:8080/misc

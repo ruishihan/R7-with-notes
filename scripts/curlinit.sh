@@ -9,6 +9,7 @@ curl http://${hostip}:8080/init?'rx&gain=55&freq=939.8e6'
 echo ""
 echo "AFC"
 curl http://${hostip}:8080/misc?'fun=awreg&reg=18&value=0x1f'
+#####AFC是什么意思？？？
 echo ""
 sleep 1
 echo "udp service start"
