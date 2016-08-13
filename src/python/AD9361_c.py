@@ -8,10 +8,11 @@ import math
 import axi2s_c
 import ad9361PLL
 
+####可以读写FPGA中的寄存器和SPI相关的寄存器（通过操纵SPI相关寄存器来使用SPI配置AD9361）
 class AD9361_c:
 	def __init__(self):
 		if c_system=='Linux':
-			self.dev = dev_mem.dev_mem(AD9361_SPI_BASE,AD9361_SPI_SIZE)
+			self.dev = dev_mem.dev_mem(AD9360_SPI_BASE,AD9361_SPI_SIZE)
 			self.ref = 25e6
 		self.api = {
 			  'arreg':self.apiread
@@ -91,6 +92,7 @@ class AD9361_c:
 
 	def readreg(self,regname):
 		if c_system=='Linux':
+		####最终从reg_define.v和spi.h文件中读出regname和地址的对应。
 			r = self.dev.ioread(reg.addr[regname])
 		else:
 			r = 0
@@ -104,6 +106,8 @@ class AD9361_c:
 			print 'W:',regname, hex(data)
 
 	def spi_op(self,addr,data,wop):
+####不管是写操作还是读操作，都是先写n 个字节，再读n 个字节。。。。
+	####按照AD9361的规定组成一个字节的控制字（地址+读写位+数据长度）
 		H8 = addr>>8
 		H8 = H8 & 0x3
 		b = len(data)
@@ -111,6 +115,7 @@ class AD9361_c:
 		H8 = H8 | (l<<4)
 		if wop==1:
 			H8 = H8 | 0x80
+		####注意地址最多为8位，AD9361预留的是10位，这里只有八位。
 		HL = addr & 0xff
 		self.writereg('SPI_Config',0x4015)
 		self.writereg('SPI_Tx_data',H8)
@@ -172,6 +177,7 @@ class AD9361_c:
 		t = float(args[0])
 		time.sleep(t/1000.)
 
+####?????
 	def API_WAIT_CALDONE(self,args):
 		m = args[0]
 		t = int(args[1])
@@ -332,6 +338,7 @@ class AD9361_c:
 	def ENSM(self,p=None):
 		r = self.readByte(0x17)&0xf
 		if p and r<12:
+####十二个状态，参数为1时输出当前状态。
 			print 'ENSM:',r,self.ensm_db[r]
 		return r
 

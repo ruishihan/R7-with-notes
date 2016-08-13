@@ -108,7 +108,10 @@ class aximem:
 
 		
 	def init(self,config):
+
+	####调用了c代码,先把各值转化为c_types，然后调用c库的函数
 		self.base = lib.axi_base()
+	####调用lib中的c函数，获取axi_base？？
 		self.dma.inp.base = config['AXI2S_IBASE']-self.base
 		self.dma.inp.size = config['AXI2S_ISIZE']
 		self.dma.out.base = config['AXI2S_OBASE']-self.base
@@ -117,6 +120,7 @@ class aximem:
 			self.dma.sock.port = config['port']
 		self.dma.inp.length = 1024
 		self.dma.out.length = 1024
+	####调用c函数，init	open
 		lib.axi_init(byref(self.handle))
 		lib.axi_open(byref(self.dma))
 
@@ -132,6 +136,7 @@ class aximem:
 		self.dma.inp.start = s
 		self.dma.inp.length = l
 		r = lib.axi_get(byref(self.dma))
+	####dma中有一个in 和一个 out 的e_aixmem成员，和一个socket成员
 		if r==l:
 			self.dma.inp.end = long(s)+l
 			return r

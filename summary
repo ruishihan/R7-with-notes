@@ -1,7 +1,22 @@
 q7web.py
-axi2s_c.py
-dev_mem.py
-config.py
+axi2s_c.py  	本函数create a memfile and set the AXI2S_EN AXI2S_I(O)SIZE(BASE) and so on.还可以读取'AXI2S_IACNT', 'AXI2S_IBCNT', 'AXI2S_OACNT', 'AXI2S_OBCNT'
+		读写寄存器(FPGA里面定义的)
+		IinBuf		OinBuf所做的判断是什么意思？？在哪里用到的？？？？？？
+		
+dev_mem.py	#本函数只使用了python提供的库mmap，不直接涉及python调用c的操作，但是mmap可能是调用c来实现的，所以需要包含ctypes库。
+		#本函数完成内存映射，并且提供内存读写接口。
+
+config.py	本函数 todict()将自身的变量和值以字典的形式返回；变量有AXI2S_IBASE/self.AXI2S_ISIZE/self.AXI2S_OBASE/self.AXI2S_OSIZE/rx/port
+		本函数init（）根据自身的变量的值开辟内存、AD9361_c.webapi()将freq和gain写入存储字典中、
+
+axi_mem.py	本函数调用c函数，实现对in /out 两个axi_mem和一个socket的设置、数据读写控制
+
+AD9361_c.py	####可以根据AD9361配置文件中的命令采取对应的措施。
+		####可以读写FPGA中的寄存器(调用axi2s_c.py来实现)和SPI相关的寄存器（通过操纵SPI相关寄存器来使用SPI配置AD9361）
+		####提供频率、增益的读写API
+		####同时提供寄存器值从十六进制到十进制的转换？？？？ int(arg.reg,16)
+		self.api{apiread,apiwrite}	self.webapi	self.order	self.cal_db	self.ensm_db
+		self.cntr=axi2s_c.axi2s_c	self.pll=ad9361PLL.ad9361PLL
 
 AXI2S_IACNT	AXI2S_IBCNT
 AXI2S_OACNT	AXI2S_OBCNT
@@ -19,3 +34,26 @@ obcnt plus 1 when cnt[21:4] up to osize
 
 
 Sclk一拍接受14bits的数据，扩展为两个字节,两个Sclk对应一次cnt[3:0] +1 (通过一个使能，使得一个frame周期内的两个Sclk信号只有一个引起cnt的累加)，所以32个Sclk为一个block(cnt[21:4] + 1)，所以一个block为64字节。。。。所以地址+64
+
+
+self.ensm_db = ['SLEEP/WAIT','CALIBRATION','CALIBRATION', 'CALIBRATION', 'WAIT to ALERT delay', 'ALERT', 'TX', 'TX FLUSH', 'RX', 'RX FLUSH', 'FDD', 'FDD FLUSH']
+状态机的十二个状态。
+
+自定义的，与SPI相关的寄存器。
+#define SPI_Config            0x00000000 //32 mixed 0x00020000 SPI configuration register
+#define SPI_Intr_status       0x00000004 //32 mixed 0x00000004 SPI interrupt status register
+#define SPI_Intrpt_en         0x00000008 //32 mixed 0x00000000 Interrupt Enable register
+#define SPI_Intrpt_dis        0x0000000C //32 mixed 0x00000000 Interrupt disable register
+#define SPI_Intrpt_mask       0x00000010 //32 ro 0x00000000 Interrupt mask register
+#define SPI_En                0x00000014 //32 mixed 0x00000000 SPI_Enable Register
+#define SPI_Delay             0x00000018 //32 rw 0x00000000 Delay Register
+#define SPI_Tx_data           0x0000001C //32 wo 0x00000000 Transmit Data Register.
+#define SPI_Rx_data           0x00000020 //32 ro 0x00000000 Receive Data Register
+#define SPI_Slave_Idle_count  0x00000024 //32 mixed 0x000000FF Slave Idle Count Register
+#define SPI_TX_thres          0x00000028 //32 rw 0x00000001 TX_FIFO Threshold Register
+#define SPI_RX_thres          0x0000002C //32 rw 0x00000001 RX FIFO Threshold Register
+#define SPI_Mod_id            0x000000FC //32 ro 0x00090106 Module ID register
+
+SPI_Config	0X4015	0x7c15
+
+/../../lib
