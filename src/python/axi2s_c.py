@@ -72,6 +72,7 @@ class axi2s_c:
 		print self.version()
 
 	def init(self):
+####init所做的工作是对一些使能寄存器进行设置，将四个需要提供值的寄存器根据给定的值进行设置。
 		self.read('AXI2S_STATE')
 		self.write('AXI2S_EN',0)
 		for r in self.base:
@@ -91,6 +92,7 @@ class axi2s_c:
 		self.read('AXI2S_STATE')
 
 	def status(self,d):
+####status根据传入的字典d 中的值来更新自身的base。
 
 		self.base = {'AXI2S_IBASE':0x1ffc0000, 'AXI2S_ISIZE':0x10000, 'AXI2S_OBASE':0xfffd0000, 'AXI2S_OSIZE':0x10000}
 		if d!=None:
@@ -100,6 +102,8 @@ class axi2s_c:
 		
 	
 	def getCNT(self):
+####从下一层读取AXI2S_IACNT	AXI2S_IBCNT	AXI2S_OACNT	AXI2S_OBCNT
+
 		regcnt  = ['AXI2S_IACNT', 'AXI2S_IBCNT', 'AXI2S_OACNT', 'AXI2S_OBCNT']
 		for r in regcnt:
 			self.cnt[r] =  self.dev.ioread(reg.addr[r])
@@ -134,6 +138,7 @@ class axi2s_c:
 def main():
 	uut = axi2s_c()
 	uut.write('AXI2S_EN',0)
+##what if argv[1] is empty???? execute 'else'???
 	if sys.argv[1]=='DRAM':
 		uut.initDRAM()
 	else:

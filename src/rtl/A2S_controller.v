@@ -83,27 +83,31 @@ begin
     bcnt <= 32'h0;
   end
   else begin
-  	if ( sync==1'b1 ) begin
-      start <= 1'b0;
-      cnt <= 22'h0;
-      bcnt <= 32'h0;
+  	if ( sync==1'b1 )
+	begin
+      	 start <= 1'b0;
+     	 cnt <= 22'h0;
+      	 bcnt <= 32'h0;
   	end
-  	else if( Oen==1'b1 ) begin
-      if( cnt[3:0]==4'hf ) begin
-        AXI_araddr_reg[5:0] <= 6'b000000;
-        AXI_araddr_reg[31:6] <= obase[31:6] + cnt[21:4];
-        cnt[3:0] <= 4'h0;
-        if( cnt[21:4]==(osize[23:6]-1'b1) ) begin
-          cnt[21:4] <= 18'h0;
-          bcnt <= bcnt + 32'h1;
-        end
-        else cnt[21:4] <= cnt[21:4]+18'h1;
-      end
-      else cnt[3:0] <= cnt[3:0] + 4'h1;
+  	else if( Oen==1'b1 )
+	begin
+     	 if( cnt[3:0]==4'hf ) 
+	 begin
+        	AXI_araddr_reg[5:0] <= 6'b000000;
+        	AXI_araddr_reg[31:6] <= obase[31:6] + cnt[21:4];
+        	cnt[3:0] <= 4'h0;
+        	if( cnt[21:4]==(osize[23:6]-1'b1) )
+		begin
+          	cnt[21:4] <= 18'h0;
+          	bcnt <= bcnt + 32'h1;
+        	end
+       	 	else cnt[21:4] <= cnt[21:4]+18'h1;
+     	 end
+      	 else cnt[3:0] <= cnt[3:0] + 4'h1;
   	end
   	if( Oen==1'b1 && cnt[3:0]==4'hf && start==1'b0 ) start <= 1'b1;
   	else start <= 1'b0;
- 	end
+ end
 end
 
 assign a2s_en = AXI_rvalid & AXI_rready;

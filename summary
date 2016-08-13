@@ -1,0 +1,21 @@
+q7web.py
+axi2s_c.py
+dev_mem.py
+config.py
+
+AXI2S_IACNT	AXI2S_IBCNT
+AXI2S_OACNT	AXI2S_OBCNT
+
+AXI2S_IBASE(0xfffc0000) 	AXI2S_ISIZE(0x400,1024)缺省值是0x400还是0x1000？
+AXI2S_OBASE(0xfffd0000)		AXI2S_OSIZE(0x400,1024)
+
+
+
+oacnt=cnt[21:4] plus 1 when cnt[3:0] up to 'f', and the AXI_araddr_reg[5:0]<=0 AXI_araddr_reg[31:6]<=obase[31:6]+cnt[21:4]
+NOTE:cnt[21:4] plus 1 (go to next block), the addr plus 64 Bytes.
+
+obcnt plus 1 when cnt[21:4] up to osize
+ 
+
+
+Sclk一拍接受14bits的数据，扩展为两个字节,两个Sclk对应一次cnt[3:0] +1 (通过一个使能，使得一个frame周期内的两个Sclk信号只有一个引起cnt的累加)，所以32个Sclk为一个block(cnt[21:4] + 1)，所以一个block为64字节。。。。所以地址+64

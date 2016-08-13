@@ -3,6 +3,7 @@
 import mmap
 from ctypes import *
 #本函数只使用了python提供的库mmap，不直接涉及python调用c的操作，但是mmap可能是调用c来实现的，所以需要包含ctypes库。
+#本函数完成内存映射，并且提供内存读写接口。
 
 class dev_mem:
     DEVNAME = '/dev/mem'

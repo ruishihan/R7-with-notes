@@ -103,8 +103,9 @@
 
 > 通过gtkterm 打开两个终端，两个终端分别对应USB口的两条线路
 
-      sudo -S gtkterm -p /dev/ttyUSB1 -s 115200 
-      sudo -S gtkterm -p /dev/ttyUSB0 -s 115200
+      sudo -b gtkterm -p /dev/ttyUSB1 -s 115200 
+      sudo -b gtkterm -p /dev/ttyUSB0 -s 115200
+
 > 在ttyUSB1端口中输入(显示为 `system:>` )
 
         从SD卡启动系统：BootFromSD / 从NAND FLASH启动系统：BootFromNAND
@@ -157,13 +158,13 @@
         sh ./scripts/scan.sh 192.168.1.11
 
 >> 打开浏览器，输入http://192.168.1.11:8080/static/scan.html，便可以打开频谱页面，可以通过页面上的三个bar分三阶设置扫频范围，同时也可以通过页面上的按钮查看数据和保存频谱图。
-   
+**三个bar分别有什么功能？？？**   
 
 ----------------------------------------------------------------
 > 功能四:GSM信令解析功能(还未完成测试) 
 >> 本功能的测试配置方面比较复杂，暂时还没有实现测试，须在纯Linux环境下测试并需使用wireshark工具进行测试
 
->> 在github上下载完R7-OCM工程后运行以下命令，下载USRT源码
+>> 在github上下载完R7-OCM工程后运行以下命令，下载USRT源码(在R7-OCM库中引用其他git 库)
 >>>
 	git submodule update --init
    

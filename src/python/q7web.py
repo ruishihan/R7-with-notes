@@ -1,3 +1,4 @@
+#-*-coding:utf-8-*-
 import web
 import os
 import axi2s_u
@@ -30,10 +31,27 @@ urls = ( '/'      ,'index'
 
 
 _g = config.config()
+'''
+                self.AXI2S_IBASE = 0x1e000000
+                self.AXI2S_ISIZE = 0xea6000
+                self.AXI2S_OBASE = 0x1f000000
+                self.AXI2S_OSIZE = 0xea6000
+                self.rx    = {
+                                'freq':940.1e6
+                        , 'gain': [68,68]
+                        }
+                self.aximem = aximem.aximem()
+                self.udpSrv = None
+                self.FM = None
+                self.port = 10000
+                self.scan = None
+
+'''
 
 class initapi:
 	def GET(self):
 		i = web.input()
+		##web.input()是怎么实现的？？
 		if 'IBASE' in i:
 			_g.AXI2S_IBASE = int(i.IBASE,16)
 		if 'ISIZE' in i:
