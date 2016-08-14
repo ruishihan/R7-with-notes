@@ -1,4 +1,15 @@
-q7web.py
+q7web.py	start/len/frame各代表什么意思？尤其是frame！！！
+		sample           数据长度
+                start            数据起点
+                frame            帧号，缺省当前帧
+
+		##txbuf的作用是什么呢？？	rxbuf根据从web输入的参数读取某段数据
+		
+		fun=awreg&reg=109&value=38
+		fun=arreg&reg=109
+		curl命令到q7web的命令之间是不是还有一道处理？？在哪？？？？
+
+
 axi2s_c.py  	本函数create a memfile and set the AXI2S_EN AXI2S_I(O)SIZE(BASE) and so on.还可以读取'AXI2S_IACNT', 'AXI2S_IBCNT', 'AXI2S_OACNT', 'AXI2S_OBCNT'
 		读写寄存器(FPGA里面定义的)
 		IinBuf		OinBuf所做的判断是什么意思？？在哪里用到的？？？？？？
@@ -17,6 +28,14 @@ AD9361_c.py	####可以根据AD9361配置文件中的命令采取对应的措施�
 		####同时提供寄存器值从十六进制到十进制的转换？？？？ int(arg.reg,16)
 		self.api{apiread,apiwrite}	self.webapi	self.order	self.cal_db	self.ensm_db
 		self.cntr=axi2s_c.axi2s_c	self.pll=ad9361PLL.ad9361PLL
+
+axi2s_u.py	_u是use的意思；上面的_c是create的意思。
+
+fm.py		本函数，主要把需要设置的参数存到self.h中，然后作为参数调用c函数fm_init fm_demod
+		####具体需要细看
+scan.py		####未看如何实现的???????
+
+
 
 AXI2S_IACNT	AXI2S_IBCNT
 AXI2S_OACNT	AXI2S_OBCNT

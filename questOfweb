@@ -1,0 +1,8 @@
+app=web.application(urls,global())
+app.run()	Starts handling requests. If called in a CGI or FastCGI context, it will follow
+        	that protocol. If called from the command line, it will start an HTTP
+       		server on the port named in the first command line argument, or, if there
+        	is no argument, on port 8080.
+
+
+globals() : Return the dictionary containing the current scope's global variables

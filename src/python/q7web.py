@@ -49,6 +49,7 @@ _g = config.config()
 '''
 
 class initapi:
+####更新各参数的值
 	def GET(self):
 		i = web.input()
 		##web.input()是怎么实现的？？
@@ -83,6 +84,8 @@ class index:
 		web.redirect('static/index.html')
 
 class txrx:
+####get or set freq and gain of tx and rx。
+####本函数是tx 和rx 的底层，tx/rx函数是调用本函数来实现的。
 	def GET(self):
 		ret = {'ret':'ok'}
 		i = web.input(freq=None,gain=None,sample=None,start=None,port=None)
@@ -150,12 +153,15 @@ class txbuf:
 		return json.dumps({'ret':'ok'})
 
 class rxbuf(paser):
+####先判断，再返回某段数据。
 	def GET(self):
 		i = web.input()
 		paser.paser3(self,i)
+	####根据输人来更新自身的start/len/frame三个值。。
 		if self.frame==0:
 			self.frame = self.axi2s.cnt['AXI2S_IBCNT']
 		sp = self.axi2s.IinBuf(self.frame,self.start)
+		####判断early/late	self.frame对应AXI2S_IBCNT	self.start对应AXI2S_IACNT
 		ep = self.axi2s.IinBuf(self.frame,self.start+self.len)
 		ret = {'cnt':self.axi2s.cnt,'start':self.start,'frame':self.frame,'len':self.len}
 		print 'sp',sp,'ep',ep	
@@ -167,7 +173,7 @@ class rxbuf(paser):
 				return buf
 		else:
 			web.header('Content-Type', 'text/json')
-			if sp>0:
+			if sp>0
 				return json.dumps({'ret':'err','res':'Data not ready','data':ret})
 			elif ep>0 and sp==0:
 				return json.dumps({'ret':'err','res':'Data not all ready','data':ret})
@@ -181,8 +187,18 @@ class rxbuf(paser):
 class misc:
 	def GET(self):
 		i = web.input(fun=None)
+		####i的格式应为 ver
+				rreg reg
 		axi2s = axi2s_c.axi2s_c(_g.todict())
 		ad = AD9361_c.AD9361_c()
+	'''               
+		 self.api = {
+                          'ver':self.apiversion
+                        , 'rreg':self.apiread
+                        , 'wreg':self.apiwrite
+                }
+		
+	'''
 		if i.fun in axi2s.api:
 			ret = axi2s.api[i.fun](i)
 		elif i.fun in ad.api:
@@ -218,7 +234,8 @@ class fir:
 		if 'fir' in i:
 			lines = i.fir.split('\n')
 			ftr.fromlines(lines)
-			for n in ftr.fir:
+####从lines(来自*.ftr文件)里面解析出name(rx/tx) gain和coeffs，写入ftr.fir{}
+		for n in ftr.fir:
 				if n in ['tx','rx']:
 					ftr.txrx = n
 					if 'port' in ftr.fir[n]:
@@ -226,6 +243,7 @@ class fir:
 					ftr.build(ftr.fir[n]['coeffs'],ftr.fir[n]['gain'])
 			ad.cntrWrite('AD9361_EN',0)
 			ftr.download(ad.SPIWrite)
+		#### *.ftr文件中的一个数字对应一次0x60到0x66（或0xF0到0xF6）寄存器的设置？？
 			ad.Check_FDD()
 			return json.dumps({'ret':'ok'})
 		elif 'chead' in i:
@@ -250,6 +268,7 @@ class fir:
 		return json.dumps({'ret':'err','res':'not fir coeff'})
 
 class data:
+####返回频谱
 	def GET(self):
 		ram = axi2s_u.axi2s_u(_g.AXI2S_IBASE,_g.AXI2S_ISIZE)
 		r = ram.rfdata()

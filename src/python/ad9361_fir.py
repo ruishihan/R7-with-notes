@@ -30,6 +30,7 @@ class ad9361_fir:
 	
 	def add(self,r,v):
 		self.order.append((self.base[self.txrx]+self.regname[r],v))
+		####列表添加一项，每项都是一个包含寄存器地址和取值的子列表。是*.ftr文件中的数字的行号和取值。
 	
 	def start(self,taps,g):
 		t =(taps+15)/16-1
@@ -44,6 +45,7 @@ class ad9361_fir:
 		self.config = v
 			
 	def coeff(self,n,v):
+	####记录将要进行参数设定的addr/wdataL/wdataH/config/rdataH的值。
 		self.add('addr',n)
 		self.add('wdataL',v&0xff)
 		self.add('wdataH',(v>>8)&0xff)
@@ -60,7 +62,10 @@ class ad9361_fir:
 		if l<=128 and l>0:
 			self.start(l,g)
 			for i in range(l):
+			####address是 1\2\3\4？？？？
 				self.coeff(i,coeffs[i])
+                        ####传入的coeffs是写入fir[a]['coeffs']列表的int型的数,但为什么coeff()函数处理时只使用两个字节？？？？
+			####python 的int是怎么存储的？？？？
 		self.end()
 
 	def split(self,x):
@@ -78,14 +83,18 @@ class ad9361_fir:
 
 	def fromlines(self,lines):
 		name = [a[:2].lower() for a in self.split(lines[0])]
+		####将一行以 ,为界，一分为二
 		gain = [int(a[5:]) for a in self.split(lines[1])]
+		####将一行以 ,为界，一分为二
 		self.fir = {}
 		for (a,b) in zip(name,gain):
 			self.fir[a] = {'gain':b,'coeffs':[]}
 		for line in lines[2:]:
 			if len(line)>1:
 				for (a,b) in zip(name,self.split(line)):
+		####将一行以 ,为界，一分为二
 					self.fir[a]['coeffs'].append(int(b))
+				####写入fir[a]['coeffs']列表的是int型的数
 
 	def download(self,spiwrite):
 		for (r,v) in self.order:

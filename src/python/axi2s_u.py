@@ -39,6 +39,7 @@ class axi2s_u:
 		return iq
 	
 	def rfdata(self):
+	####从存储器中把数据读到buf，然后对buf中的数据进行快速傅里叶变换，得出频谱。
 		self.dev.SetOffset(0)
 		d = np.frombuffer(self.dev.mmap, dtype=np.int16, count=1920*2, offset=0)
 		iq = complex(1.,0.)*d[::2]+complex(0.,1.)*d[1::2]
