@@ -182,6 +182,11 @@
 >>>
 	4. make /tmp/libcgsm.so
 
+>>建立动态库链接
+
+		sudo ln -s /tmp/libmd5api.so /usr/lib/
+		sudo ldconfig
+
   
 >> 然后再依次运行以下命令：
 >>> 
@@ -198,9 +203,10 @@
 >>>  
 	2. python SyncTask.py
    
+***执行python SyncTask.py需要预先安装matplotlib库和numpy库***
+		sudo apt-get install python-matplotlib
+		sudo apt-get install numpy
    
-* 注：以上是大致的操作流程，可能还存在些问题，记得好像还需要设置一个系统的东西，
-   我也忘了怎么弄了，有空请教教一下赵老师吧，我当时也并没有实现这一功能的测试。
 
 
 ### 通过curl对ARM进行配置

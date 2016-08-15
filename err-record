@@ -1,0 +1,15 @@
+eth0: link is not ready
+
+
+root@r7-zynq7:~# ifconfig 
+eth0      Link encap:Ethernet  HWaddr 00:0A:35:00:01:22  
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:6 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:1048 (1.0 KiB)
+          Interrupt:54 Base address:0xb000 
+
+
+when `python GSMRoughSync.py`
+clock not stable 0
