@@ -1,0 +1,28 @@
+
+reset AFC
+freq error -1093.32659431 ppm 3348978794
+* 
+reset AFC
+freq error 949.448464212 ppm 3360785135
+rough sync: 960000.0
+
+reset AFC
+freq error 949.129247358 ppm 3361151800
+rough sync: 959700.0
+
+
+-----------------------------------------
+
+mem rx_udp.d
+resync:
+Traceback (most recent call last):
+  File "GSMRoughSync.py", line 55, in <module>
+    main()
+  File "GSMRoughSync.py", line 46, in main
+    f0 = rs.sync()
+  File "GSMRoughSync.py", line 29, in sync
+    fp,new_frame,ff,fa = self.once()
+  File "GSMRoughSync.py", line 15, in once
+    rfd,start = self.getRfData(0,self.mfl)
+TypeError: 'NoneType' object is not iterable
+

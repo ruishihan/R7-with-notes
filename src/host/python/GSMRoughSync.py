@@ -7,7 +7,7 @@ from host.curlwrapper import curlwrapper
 
 from GSMSync import GSMSync
 class GSMRoughSync(GSMSync):
-	def __init__(self,f,url='http://192.168.1.110:8080/'):
+	def __init__(self,f,url='http://169.254.244.231:8080/'):
 		GSMSync.__init__(self,f,url)
 
 	def once( self ):
