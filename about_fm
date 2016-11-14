@@ -1,0 +1,9 @@
+1. Get original data by aximem.dma.inp.data that get data from OCM via aximem.get(start,len)
+
+2. The string aximem.dma.inp.data is attach to h_FM.buf, and then h_FM, which also have a string 'result' and several index, is sent to fm.c
+
+3. The result of demodel stored in the memories that h_FM.result points to
+
+4. When client send the GET message contains 'data', web-server(ARM) will return a set of data stored in 'result'.
+
+??????WHAT IS THE FREQUENCY THAT CLIENT SEND GET 'data' message.

@@ -1,0 +1,37 @@
+QUESTIONS:	application/octet-stream是二进制文件，浏览器怎么处理？？
+		很多Content-Type有多种文件类型与之对应，客户端怎么来区分？？
+		实验一下可不可以用audio/basic类型来传广播声音？？？
+		FMAPI	data模块， PC侧对ARM的data请求频率是多少？？？
+
+MIME(Multipurpose Internet Mail Extensions)多用途互联网邮件扩展类型。是设定某种扩展名的文件用一种应用程序来打开的方式类型，当该扩展名文件被访问的时候，浏览器会自动使用指定应用程序来打开。多用于指定一些客户端自定义的文件名，以及一些媒体文件打开方式。
+它是一个互联网标准，扩展了电子邮件标准，使其能够支持：
+非ASCII字符文本；非文本格式附件（二进制、声音、图像等）；由多部分（multiple parts）组成的消息体；包含非ASCII字符的头信息（Header information）。
+
+一些非英语字符消息和二进制文件，图像，声音等非文字消息原本都不能在电子邮件中传输(MIME可以)。MIME规定了用于表示各种各样的数据类型的符号化方法。 此外，在万维网中使用的HTTP协议中也使用了MIME的框架，标准被扩展为互联网媒体类型。
+
+
+
+最早的HTTP协议中，并没有附加的数据类型信息，所有传送的数据都被客户程序解释为超文本标记语言HTML 文档，而为了支持多媒体数据类型，HTTP协议中就使用了附加在文档之前的MIME数据类型信息来标识数据类型。
+
+
+
+常见的MIME类型(通用型)：
+超文本标记语言文本 .html text/html
+xml文档 .xml text/xml
+XHTML文档 .xhtml application/xhtml+xml
+普通文本 .txt text/plain
+RTF文本 .rtf application/rtf
+PDF文档 .pdf application/pdf
+Microsoft Word文件 .word application/msword
+PNG图像 .png image/png
+GIF图形 .gif image/gif
+JPEG图形 .jpeg,.jpg image/jpeg
+au声音文件 .au audio/basic
+MIDI音乐文件 mid,.midi audio/midi,audio/x-midi
+RealAudio音乐文件 .ra, .ram audio/x-pn-realaudio
+MPEG文件 .mpg,.mpeg video/mpeg
+AVI文件 .avi video/x-msvideo
+GZIP文件 .gz application/x-gzip
+TAR文件 .tar application/x-tar
+任意的二进制数据 application/octet-stream
+

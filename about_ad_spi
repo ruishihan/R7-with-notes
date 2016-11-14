@@ -1,0 +1,20 @@
+AD9361_c.spi_op(addr,data,wop)
+
+1. write/read to the registers SPI_Config SPI_Tx_data SPI_Rx_data by calling axi2s_c.write/read then calling the dev_mem.iowrite/ioread
+
+2. dev_mem.iowrite calls mmap.write/read(python)
+
+3.1  Write to or read from FPGA registers???????(the address is from reg.define.v)
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+3.2  Write to or read from ARM registers of SPI pins-control -----(from ../c/spi.h)
+
+4. The ENSM changes its own state each time the AD9361 is re-enabled----actually, you can change the state by ??????????
+
+AD9361_c offers 
+	the api to read/write single or a set of register(s) of ad9361 via spi .
+		SPI_Config	SPI_Rx_data	SPI_Tx_data
+
+
+	other registers on FPGA that is related to AD9361
+		AD9361_EN	AD9361_RST
+	ENSM

@@ -1,0 +1,12 @@
+class udp_header(Structure):
+	_fields_ =  [  ("time", c_ulonglong)
+							, ("offset", c_ulonglong)
+						]
+
+class udp_package(Structure):
+	_fields_ =  [  ("header", udp_header)
+							, ("data", c_char*1024)
+						]
+
+call the program in the c_lib (axi.mem.c), axi_inp_task/axi_out_task
+the data read/write from DRAM (32M)

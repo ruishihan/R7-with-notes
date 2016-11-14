@@ -1,0 +1,81 @@
+time
+start
+length
+size
+class e_aximem(Structure):
+	_fields_ = [  ("base", c_uint)
+							, ("size", c_uint)
+							, ("acnt", c_uint)
+							, ("bcnt", c_uint)
+							, ("time", c_ulonglong)
+							, ("start", c_ulonglong)
+							, ("end", c_ulonglong)
+							, ("length", c_uint)
+							, ("pm", p_monitor)
+							, ("data", c_void_p)
+							]
+
+class e_socket_info(Structure):
+	_fields_ = [  ("sid", c_uint)
+							, ("port", c_uint)
+							, ("send_en", c_uint)
+							, ("recv_en", c_uint)
+							, ("servAddrLen", c_uint)
+							, ("peerAddrLen", c_uint)
+							, ("addr", c_char*64)
+							]
+
+class axi_dma(Structure):
+	_fields_ = [  ("inp", e_aximem)
+							, ("out", e_aximem)
+							, ("sock", e_socket_info)
+						]
+
+class aximem:
+	def __init__(self,config=None):
+		self.handle = h_aximem()
+
+		self.dma = axi_dma()
+		self.dma.sock.port = 10000
+		if config==None:
+			self.dma.inp.base = 0
+			self.dma.inp.size = 0x100000
+			self.dma.out.base = 0x1f00000
+			self.dma.out.size = 0x100000
+		else:
+			self.init(config)
+		self.errcnt = {}
+		for i in range(0,-7,-1):
+			self.errcnt[i] = 0
+		self.inp_package = udp_package()
+#		time(longlong)+offset(longlong)+data(1024 B)
+		self.out_package = udp_package()
+
+
+
+class config:
+	def __init__(self):
+		self.AXI2S_IBASE = 0x1e000000
+		self.AXI2S_ISIZE = 0xea6000
+		self.AXI2S_OBASE = 0x1f000000
+		self.AXI2S_OSIZE = 0xea6000
+		self.rx    = {
+				'freq':940.1e6
+			, 'gain': [68,68]
+			}
+		self.aximem = aximem.aximem()
+		self.udpSrv = None
+		self.FM = None
+		self.port = 10000
+		self.scan = None
+
+
+class h_FM(Structure):
+	_fields_ = [  ("buf", c_void_p)
+							, ("result", c_void_p)
+							, ("os1", c_uint)
+							, ("os2", c_uint)
+							, ("len", c_uint)
+							, ("atan_lut", c_int*131072)
+							, ("pre", c_short*2)
+							]
