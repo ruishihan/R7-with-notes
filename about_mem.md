@@ -22,6 +22,7 @@ SPI寄存器主要用于SPI的控制参数设置、写SPI数据发送buffer、�
 		#define AXI2S_ISIZE 0xea6000
 		#define AXI2S_OBASE 0x1f000000
 		#define AXI2S_OSIZE 0xea6000
+
 其中，AXI2S_ISIZE和AXI2S_OSIZE分别代表input缓冲区(FPGA写，ARM读)和output缓冲区(ARM写，FPGA读)的大小，可以根据需要更改，但是最大不应超过16MB，且应为64 Bytes 的整数倍。
 
 ##OCM缓冲区
