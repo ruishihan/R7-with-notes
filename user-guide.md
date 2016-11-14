@@ -10,7 +10,7 @@
 目前分析可能是以下原因:
 >* 浏览器的配置问题；
 
->* 板子本身的配置问题(测试过程中发现有的板子会出现这一问题)
+>* 板子本身的配置问题(测试过程中发现有的板子会出现这一问题) *
 
 -------------------------------------------------------------
 ## 测试环境与工具：
@@ -67,16 +67,22 @@
 > 5. 格式化两个分区，分别用下面的命令将两个分区格式化成ext4和fat32格式：
 >>       sudo mkfs.vfat /dev/sdb1
 >>       sudo mkfs.ext4 /dev/sdb2
->>*注： 如果SD卡已有分区，但分区大小不符合要求，则可以通过 d 命令删除分区。注意分区时须把第一个分区设置成FAT32格式，否则可能会出现问题
+>>*注： 如果SD卡已有分区，但分区大小不符合要求，则可以通过 d 命令删除分区。注意分区时须把第一个分区设置成FAT32格式，否则可能会出现问题 *
 >
 > 6. 将SD卡挂载后进入分区二（linux分区），执行下述命令：
 >>        zcat /.../root.full.function/core-image-my-sdk-r7-zynq7-20150620151425.rootfs.cpio.gz |sudo cpio -i
 
 > 7. 将root.full.function 文件夹中的 BOOT.bin  devicetree.dtb  uEnv.txt  uImage uramdisk.image.gz 五个文件拷贝到分区一(FAT32分区)中
 
-> 8. 在卸载SD卡之前，使用 `sync` 确保数据已全部写入SD卡；然后正确卸载SD卡
+> 8. 在完成下一部分“PC端的工作”中的R7-OCM的下载后，进入R7-OCM/dts/目录下，生成设备树文件：
+		dtc -I dts -O dtb -o devicetree.dtb devicetree.dts
+*如果未安装dtc编译工具，需要先运行`sudo apt-get install device-tree-compiler` 安装dtc工具*
 
-* 至此，系统盘制作完成。ARM将先读取分区一中的启动文件，并启动程序，在启动后挂载分区二，并改为运行分区二中的程序。
+> 9. 将uEnv.txt和devicetree.dtb文件拷贝到SD卡的FAT32分区中，覆盖原有文件。
+
+> 10. 在卸载SD卡之前，使用 `sync` 确保数据已全部写入SD卡；然后正确卸载SD卡
+
+* 至此，系统盘制作完成。ARM将先读取分区一中的启动文件，并启动程序，在启动后挂载分区二，并改为运行分区二中的程序。*
 
 
 
@@ -88,7 +94,7 @@
 > 2. 在R7-OCM目录下运行 `make install`,该命令将给upload.sh 和 curlinit.sh 文件赋予执行权限；把 post-commit 文件copy到.git/hooks目录下，并赋予执行权限。
 
 > 3. 在R7-OCM目录下运行 `.git/hooks/post-commit`，该命令将生成 src/rtl/gitversion.v，文件中记录了版本信息，该文件将在Vivado运行R7OCM.tcl脚本时被用到。
->>* 注：此处可以直接设置scripts文件夹下的执行权限，再直接运行./scripts/post-commit 命令实现
+>>* 注：此处可以直接设置scripts文件夹下的执行权限，再直接运行./scripts/post-commit 命令实现 *
 
 > 4. 用 Vivado 生成FPGA的配置文件R7OCM_top.bit
 
@@ -110,18 +116,18 @@
 > 3. 在ttyUSB1端口中输入(显示为 `system:>` )
 >> 从SD卡启动系统：BootFromSD / 从NAND FLASH启动系统：BootFromNAND
 >>
->> * 注：此处须设置从SD卡启动
+>> * 注：此处须设置从SD卡启动 *
 
 > 4. 另一个端口会显示ARM正在启动linux系统，等待启动完成后，输入用户名 root(此系统未设置密码，直接使用用户名登录即可)，进入系统
->>* 如果系统启动失败，可能是因为SD未正确卸载导致的，可以先尝试重新输入`BootFromSD`，重启系统；如果还不行，将SD卡重新挂载在PC上，然后正确卸载即可。
+>>* 如果系统启动失败，可能是因为SD未正确卸载导致的，可以先尝试重新输入`BootFromSD`，重启系统；如果还不行，将SD卡重新挂载在PC上，然后正确卸载即可。*
 
 > 5. 对PC和ARM的IP进行配置，注意一定要让两者在一个网段(如现设PC和Q7板子的IP分别为： 192.168.1.12 192.168.1.11)
 
 > 6. 在 ***PC*** 的命令窗口中，切换到R7-OCM目录下，运行
 >>            sh ./scripts/upload.sh 192.168.1.11 1
 
-* 注意命令后须设两个参数，第一个为Q7板子的IP地址，第二个为vivado工程下的`R7OCM.runs/impl_1`目录`impl_1`中的数字，一般情况下默认为数字 ` 1 `
-* upload.sh 脚本中主要完成文件压缩（PC端）、文件上传、文件解压（ARM端），FPGA配置（R7OCM_top.bit），并且在ARM端运行axi2s_c.py 和 q7web.py两个python程序
+* 注意命令后须设两个参数，第一个为Q7板子的IP地址，第二个为vivado工程下的`R7OCM.runs/impl_1`目录`impl_1`中的数字，一般情况下默认为数字 ` 1 ` *
+* upload.sh 脚本中主要完成文件压缩（PC端）、文件上传、文件解压（ARM端），FPGA配置（R7OCM_top.bit），并且在ARM端运行axi2s_c.py 和 q7web.py两个python程序 *
 
 ## 在PC端接收并查看数据 及 通过curl对ARM各参数进行配置(详见工程目录中的RESTful.md文件)
 
@@ -136,8 +142,8 @@
 
 > 2. 打开浏览器，输入192.168.1.11:8080，即可打开web网页查看图形，在另一个浏览器窗口中输入以下命令可以设置频率和增益(其它功能中的设置方法一样):
 
-  * 设置频率: 192.168.1.11:8080/rx?freq(查看频率)、192.168.1.11:8080/rx?freq=942.4e6(设置频率为942.4MHz)
-  * 设置增益: 192.168.1.11:8080/rx?gain(查看增益)、192.168.1.11:8080/rx?gain=60(设置增益为60,最大为76)
+  * 设置频率: 192.168.1.11:8080/rx?freq(查看频率)、192.168.1.11:8080/rx?freq=942.4e6(设置频率为942.4MHz) *
+  * 设置增益: 192.168.1.11:8080/rx?gain(查看增益)、192.168.1.11:8080/rx?gain=60(设置增益为60,最大为76) *
 
 -------------------------------------------------------------
  功能二：FM调频收音机
@@ -153,7 +159,7 @@
 >>       sh ./scripts/scan.sh 192.168.1.11
 
 > 2. 打开浏览器，输入http://192.168.1.11:8080/static/scan.html，便可以打开频谱页面，可以通过页面上的三个bar分三阶设置扫频范围，同时也可以通过页面上的按钮查看数据和保存频谱图。
-**三个bar分别有什么功能？？？**   
+**三个bar分别有什么功能？？？**
 
 ----------------------------------------------------------------
  功能四:GSM信令解析功能(还未完成测试) 
@@ -163,14 +169,14 @@
 >> 	git submodule update --init
    
 > 3. 下载完后需进入src/host/cpp/USRT目录下打个补丁，命令为：
->> 	patch < ../USRT.patch    
+>> 	patch < ../USRT.patch
 
 > 4. 进入R7-OCM工程目录，执行Makefile文件,具体命令如下：
 >>        make usrtlib
 >>        make hostlib
 >>        make host
 >>        make /tmp/libcgsm.so
->> * 出现`make: Nothing to be done for 'host'.`的提示是正常的。
+>> * 出现`make: Nothing to be done for 'host'.`的提示是正常的。*
 > 5. 建立动态库链接
 		sudo ln -s /tmp/libmd5api.so /usr/lib/
 		sudo ldconfig
@@ -196,7 +202,7 @@
 
 
 ### 通过curl对ARM进行配置
-* 通过curl控制ARM的方法详见R7-OCM/RESTful.md
+* 通过curl控制ARM的方法详见R7-OCM/RESTful.md *
 
 -----------------------------------------------------------------
 ## 大规模配置ad9361的寄存器（ad9361寄存器配置文件的生成和使用）
