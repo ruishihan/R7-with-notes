@@ -3,6 +3,7 @@
 在ARM中，存储空间都是通过设备文件`/dev/mem`访问，下面分别介绍：
 ##寄存器地址空间
 FPGA寄存器和SPI寄存器的地址分配为：
+
 		#define FPGA_BASE 0x40000000
 		#define FPGA_SIZE 0x40000
 		#define AD9361_SPI_BASE  0xE0007000
@@ -16,6 +17,7 @@ SPI寄存器主要用于SPI的控制参数设置、写SPI数据发送buffer、�
 
 ##DRAM缓冲区
 通过设置FPGA寄存器的值如下，可以使用DRAM寄存器：
+
 		#define AXI2S_IBASE 0x1e000000
 		#define AXI2S_ISIZE 0xea6000
 		#define AXI2S_OBASE 0x1f000000
@@ -25,6 +27,7 @@ SPI寄存器主要用于SPI的控制参数设置、写SPI数据发送buffer、�
 ##OCM缓冲区
 
 通过设置FPGA寄存器的值如下，可以使用OCM缓冲区：
+
 		#define AXI2S_IBASE 0x1ffc0000
 		#define AXI2S_ISIZE 0x10000
 		#define AXI2S_OBASE 0xfffd0000
